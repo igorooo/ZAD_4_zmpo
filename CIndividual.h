@@ -41,7 +41,7 @@ public:
     CIndividual(int SIZE, double MAX_LOAD, double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK, bool* GENOTYPE);
     ~CIndividual();
 
-    bool operator<(CIndividual &OBJECT);
+    bool operator>(CIndividual &OBJECT);
 
 
 

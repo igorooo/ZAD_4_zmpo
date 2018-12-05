@@ -122,8 +122,8 @@ CIndividual::~CIndividual() {
     delete[] GENOTYPE;
 }
 
-bool CIndividual::operator<(CIndividual &OBJECT) {
-    return false;
+bool CIndividual::operator>(CIndividual &OBJECT) {
+    return (this->FITNESS > OBJECT.FITNESS);
 }
 
 void CIndividual::create_genotype() {

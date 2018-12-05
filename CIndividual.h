@@ -5,7 +5,14 @@
 #ifndef ZAD_4_ZMPO_CINDIVIDUAL_H
 #define ZAD_4_ZMPO_CINDIVIDUAL_H
 
-#define EPSILON 0.0001
+#include <cstdlib>
+#include <cmath>
+#include <iostream>
+#include "Knapsack.h"
+
+#define EPSILON 0.001
+
+using namespace std;
 
 
 class CIndividual {
@@ -15,15 +22,23 @@ private:
     int SIZE;
     double MAX_LOAD;
     double FITNESS;
+    double CROSS_PROB,MUT_PROB;
+    Knapsack* KNAPSACK;
+
 
 
 public:
+    void c_fitness();
     double fitness();
-    void mutation(double PROBABILITY);   //  0 <= PROBABILITY <=1
-    CIndividual cross(CIndividual PARENT_B);  // this = PARENT_A
+    void mutation();   //  0 <= PROBABILITY <=1
+    CIndividual* cross(CIndividual* PARENT_B,int CROSS_PARTITION);  // this = PARENT_A
+    bool brandom(double PROBA);
+    void create_genotype();
+    void print_gen();
 
-    CIndividual();
-    CIndividual(int SIZE, int MAX_LOAD);
+    CIndividual(CIndividual &CLONE);
+    CIndividual(int SIZE, double MAX_LOAD, double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK);
+    CIndividual(int SIZE, double MAX_LOAD, double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK, bool* GENOTYPE);
     ~CIndividual();
 
     bool operator<(CIndividual &OBJECT);

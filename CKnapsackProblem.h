@@ -6,11 +6,24 @@
 #define ZAD_4_ZMPO_CKNAPSACKPROBLEM_H
 
 
+#include "Knapsack.h"
+#include "CGeneticAlgorithm.h"
+
 class CKnapsackProblem {
 
 private:
-    int AMOUNT_OF_ITEMS;
+    int N_ITEMS;
     double MAX_LOAD;
+    Knapsack* KNAPSACK;
+    CGeneticAlgorithm* CGA;
+
+public:
+
+
+
+
+
+
 
 
 };

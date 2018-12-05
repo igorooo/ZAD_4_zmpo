@@ -24,7 +24,7 @@ private:
 
 public:
     void cr_fst_gen();  //create first generation
-    void next_gen(int LAST_GEN_POS);
+    void next_gen();
     void find_cur_leader(int POS);
     CIndividual* wh_gen_leader(); //whole generation leader
     CIndividual* parent(int POS);

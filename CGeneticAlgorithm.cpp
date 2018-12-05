@@ -19,26 +19,31 @@ void CGeneticAlgorithm::cr_fst_gen() {
 
 }
 
-void CGeneticAlgorithm::next_gen(int LAST_GEN_POS) {
+void CGeneticAlgorithm::next_gen() {
 
         CIndividual* PARENT_A;
         CIndividual* PARENT_B;
+        int CROSS_PART;
+
 
         for(int POP_ITER = 0; POP_ITER < this->POP_SIZE; POP_ITER++){
 
+            PARENT_A = this->parent(this->CURRENT_GEN);
+            PARENT_B = this->parent(this->CURRENT_GEN);
 
+            CROSS_PART = (rand()%(this->KNAPSACK->size()-1))+1;
 
+            this->WHOLE_GENERATION[this->CURRENT_GEN+1][POP_ITER++] = PARENT_A->cross(PARENT_B,CROSS_PART);
 
+            if(POP_ITER < this->POP_SIZE){
 
-
-
-
+                this->WHOLE_GENERATION[this->CURRENT_GEN+1][POP_ITER++] = PARENT_B->cross(PARENT_A,CROSS_PART);
+            }
 
         }
 
-
-
-
+        this->CURRENT_GEN ++;
+        this->find_cur_leader(this->CURRENT_GEN);
 }
 
 void CGeneticAlgorithm::find_cur_leader(int POS) {
@@ -71,7 +76,17 @@ CIndividual* CGeneticAlgorithm::parent(int POS) {
 
 
 CIndividual* CGeneticAlgorithm::wh_gen_leader() {
-    //return CIndividual(CIndividual());
+
+        CIndividual* WH_LEADER = this->WHOLE_GENERATION[0][this->POP_SIZE];
+
+        for(int POP_ITER = 0; POP_ITER < this->POP_SIZE; POP_ITER++){
+
+                if(this->WHOLE_GENERATION[POP_ITER][this->POP_SIZE] > WH_LEADER){
+                        WH_LEADER = this->WHOLE_GENERATION[POP_ITER][this->POP_SIZE];
+                }
+        }
+
+        return WH_LEADER;
 }
 
 void CGeneticAlgorithm::run_ga() {

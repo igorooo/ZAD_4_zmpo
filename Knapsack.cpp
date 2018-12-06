@@ -20,47 +20,19 @@ double Knapsack::value_of_item(int POS) {
     return this->VALUE_OF_ITEMS[POS];
 }
 
-void Knapsack::fill_weights(vector<double> TAB) {
 
-
-    if(TAB.size() != this->N_ITEMS){
-        cout<<"ERROR! WRONG WEIGHTS ARRAY SIZE"<<endl;
-        return;
-    }
-
-
-    for(int i = 0; i < this->N_ITEMS; i++){
-        this->WEIGHT_OF_ITEMS[i] = TAB[i];
-    }
-}
-
-void Knapsack::fill_values(vector<double> TAB) {
-
-    if(TAB.size() != this->N_ITEMS){
-        cout<<"ERROR! WRONG VALUES ARRAY SIZE"<<endl;
-        return;
-    }
-
-
-    for(int i = 0; i < this->N_ITEMS; i++){
-        this->VALUE_OF_ITEMS[i] = TAB[i];
-    }
-}
-
-Knapsack::Knapsack(int N_ITEMS, double MAX_LOAD) {
+Knapsack::Knapsack(int N_ITEMS, double MAX_LOAD, vector<double> WEIGHTS, vector<double> VALUES) {
 
     this->N_ITEMS = N_ITEMS;
     this->MAX_LOAD = MAX_LOAD;
 
-    this->VALUE_OF_ITEMS = new double[N_ITEMS +1];
-    this->WEIGHT_OF_ITEMS = new double[N_ITEMS +1];
+    this->WEIGHT_OF_ITEMS = WEIGHTS;
+    this->VALUE_OF_ITEMS = VALUES;
 
 }
 
 Knapsack::~Knapsack() {
 
-    delete[] VALUE_OF_ITEMS;
-    delete[] WEIGHT_OF_ITEMS;
 }
 
 int Knapsack::size() {

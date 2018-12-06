@@ -12,10 +12,10 @@ int main() {
 
     srand(time(0));
 
-    Knapsack* KN = new Knapsack(5,12);
 
-    double vTab[] = {1.0, 2.1, 3, 4, 5};
-    double wTab[] = {1.5, 2.6, 2, 4, 4.5};
+
+    double vTab[] = {1.0, 2.1, 3, 4, 5};   //WART
+    double wTab[] = {1.5, 2.6, 2, 4, 4.5};  //WAGI
 
     vector<double> weights;
     vector<double> values;
@@ -25,24 +25,31 @@ int main() {
         values.push_back(vTab[i]);
     }
 
+
+    Knapsack* KN = new Knapsack(5,12.0,weights,values);
+
+
     int POP_SIZE = 10;
     int END_GEN = 10;
     double CROSS_PROB = 0.7;
     double MUT_PROB = 0.1;
 
+    bool tt[] = {1,1,0,0,1};
+    bool tt1[] = {1,0,0,1,1};
 
-    KN->fill_values(values);
-    KN->fill_weights(weights);
+    CIndividual* CII1 = new CIndividual(CROSS_PROB,MUT_PROB,KN,tt1);
+    CIndividual* CII = new CIndividual(CROSS_PROB,MUT_PROB,KN,tt);
 
-    /*
-    CIndividual* CI = new CIndividual(SIZE,12,0.7,0.1,KN);
-
-    CI->print_gen();  */
+    cout<<"CII "<<CII->fitness()<<endl;
+    cout<<"CII1 "<<CII1->fitness()<<endl;
+    cout<<(*CII1 > *CII) <<endl;
 
     CGeneticAlgorithm* CGA = new CGeneticAlgorithm(POP_SIZE,END_GEN,CROSS_PROB,MUT_PROB,KN);
 
     CGA->run_ga();
-    CGA->print_wh_gen();
+
+    delete CGA;
+
 
 
     return 0;

@@ -47,6 +47,7 @@ void CIndividual::mutation() {
             this->GENOTYPE[i] = !(this->GENOTYPE[i]);
         }
     }
+    this->c_fitness();
 }
 
 CIndividual* CIndividual::cross(CIndividual* PARENT_B, int CROSS_PARTITION) {
@@ -63,7 +64,18 @@ CIndividual* CIndividual::cross(CIndividual* PARENT_B, int CROSS_PARTITION) {
             N_GENOTYPE[i] = PARENT_B->GENOTYPE[i];
         }
 
-        return (new CIndividual(this->SIZE,this->MAX_LOAD,this->CROSS_PROB, this->MUT_PROB,this-> KNAPSACK, N_GENOTYPE));
+
+        /*   //------- DEBUG ------
+        this->print_gen();
+        cout<<" + ";
+        PARENT_B->print_gen();
+        cout<<"  =  ";
+        for(int i = 0; i < this->SIZE; i++)
+            cout<<N_GENOTYPE[i];
+        cout<<"     PARTITION = "<<CROSS_PARTITION<<endl;
+         */
+
+        return (new CIndividual(this->CROSS_PROB, this->MUT_PROB,this-> KNAPSACK, N_GENOTYPE));
     }
 
     else{
@@ -91,10 +103,10 @@ CIndividual::CIndividual(CIndividual &CLONE) {
     this->FITNESS = CLONE.FITNESS;
 }
 
-CIndividual::CIndividual(int SIZE, double MAX_LOAD, double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK) {
+CIndividual::CIndividual( double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK) {
 
-    this->SIZE = SIZE;
-    this->MAX_LOAD = MAX_LOAD;
+    this->SIZE = KNAPSACK->size();
+    this->MAX_LOAD = KNAPSACK->max_load();
     this->CROSS_PROB = CROSS_PROB;
     this->MUT_PROB = MUT_PROB;
     this->KNAPSACK = KNAPSACK;
@@ -104,10 +116,10 @@ CIndividual::CIndividual(int SIZE, double MAX_LOAD, double CROSS_PROB, double MU
     this->c_fitness();
 }
 
-CIndividual::CIndividual(int SIZE, double MAX_LOAD, double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK, bool *GENOTYPE) {
+CIndividual::CIndividual( double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK, bool *GENOTYPE) {
 
-    this->SIZE = SIZE;
-    this->MAX_LOAD = MAX_LOAD;
+    this->SIZE = KNAPSACK->size();
+    this->MAX_LOAD = KNAPSACK->max_load();
     this->CROSS_PROB = CROSS_PROB;
     this->MUT_PROB = MUT_PROB;
     this->KNAPSACK = KNAPSACK;
@@ -142,7 +154,7 @@ void CIndividual::print_gen() {
     for(int i = 0; i < this->SIZE; i++){
         cout<<this->GENOTYPE[i];
     }
-    cout<<" ";
+    cout<<"("<<this->fitness()<<")";
     //cout<<" fitness: "<<this->FITNESS<<endl;
 
 }

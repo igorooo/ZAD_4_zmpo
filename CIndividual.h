@@ -37,13 +37,11 @@ public:
     void print_gen();
 
     CIndividual(CIndividual &CLONE);
-    CIndividual(int SIZE, double MAX_LOAD, double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK);
-    CIndividual(int SIZE, double MAX_LOAD, double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK, bool* GENOTYPE);
+    CIndividual( double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK);
+    CIndividual( double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK, bool* GENOTYPE);
     ~CIndividual();
 
     bool operator>(CIndividual &OBJECT);
-
-
 
 
 };

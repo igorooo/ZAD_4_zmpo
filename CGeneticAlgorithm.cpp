@@ -6,120 +6,87 @@
 
 void CGeneticAlgorithm::cr_fst_gen() {
 
-        CIndividual** CInARRAY = new CIndividual*[this->POP_SIZE +2];
-
-
-
         for(int i = 0; i < this->POP_SIZE; i++){
 
-                CInARRAY[i] = new CIndividual(this->KNAPSACK->size(),this->KNAPSACK->max_load(),this->CROSS_PROBA,this->MUTATION_PROBA,this->KNAPSACK);
+                WHOLE__GENS(0).push_back(new CIndividual(this->CROSS_PROBA,this->MUTATION_PROBA,this->KNAPSACK));
                // CInARRAY[i]->print_gen();
         }
-
-        this->CURRENT_GEN = 0;
-        this->WHOLE_GENERATION[0] = CInARRAY;
-        this->find_cur_leader(0);
-
-        cout<<"FRST GEN: ";
-        this->print_gen(0);
-
+        WHOLE__GENS(0).push_back(this->find_cur_leader(0));
 }
 
-void CGeneticAlgorithm::next_gen() {
+void CGeneticAlgorithm::next_gen(int LAST_GEN) {
 
         CIndividual* PARENT_A;
         CIndividual* PARENT_B;
-        int CROSS_PART,POP_ITER = 0;
-
-        CIndividual** CInARRAY = new CIndividual*[this->POP_SIZE +2];
+        int CROSS_PART;
 
 
-        //for(int POP_ITER = 0; POP_ITER < this->POP_SIZE; POP_ITER++){
-        while(POP_ITER < this->POP_SIZE){
+        for(int POP_ITER = 0; POP_ITER < this->POP_SIZE /2; POP_ITER++){
 
             //cout<<CURRENT_GEN<<"<-"<<endl;
-            PARENT_A = this->parent(this->CURRENT_GEN);
-            PARENT_B = this->parent(this->CURRENT_GEN);
+            PARENT_A = this->parent(LAST_GEN);
+            PARENT_B = this->parent(LAST_GEN);
 
             CROSS_PART = (rand()%(this->KNAPSACK->size()-2))+1;
 
            // this->WHOLE_GENERATION[this->CURRENT_GEN+1][POP_ITER++] = PARENT_A->cross(PARENT_B,CROSS_PART);
 
-           CInARRAY[POP_ITER++] = new CIndividual(*PARENT_A->cross(PARENT_B,CROSS_PART));
 
-            if(POP_ITER < this->POP_SIZE){
+           WHOLE__GENS(LAST_GEN+1).push_back(new CIndividual(*PARENT_A->cross(PARENT_B,CROSS_PART)));
+           WHOLE__GENS(LAST_GEN+1).push_back(new CIndividual(*PARENT_B->cross(PARENT_A,CROSS_PART)));
 
-               // this->WHOLE_GENERATION[this->CURRENT_GEN+1][POP_ITER++] = PARENT_B->cross(PARENT_A,CROSS_PART);
-                CInARRAY[POP_ITER++] = new CIndividual(*PARENT_B->cross(PARENT_A,CROSS_PART));
-            }
 
         }
 
-        cout<<"GEN: "<<this->CURRENT_GEN<<" : ";
-        this->print_gen(this->CURRENT_GEN);
-
-        if(CURRENT_GEN > 0){
-                cout<<"GEN(before) "<<this->CURRENT_GEN-1<<" : ";
-                this->print_gen(this->CURRENT_GEN-1);
+        /**  MUTATION */
+        for(int i = 0; i < WHOLE__GENS(LAST_GEN+1).size(); i++){
+                WHOLE_GENS(LAST_GEN+1,i)->mutation();
         }
 
-        this->CURRENT_GEN ++;
-        this->WHOLE_GENERATION[this->CURRENT_GEN] = CInARRAY;
-        this->find_cur_leader(this->CURRENT_GEN);
+        WHOLE__GENS(LAST_GEN+1).push_back(this->find_cur_leader(LAST_GEN+1));
 }
 
-void CGeneticAlgorithm::find_cur_leader(int POS) {
+CIndividual* CGeneticAlgorithm::find_cur_leader(int POS) {
 
-        CIndividual* LEADER = this->WHOLE_GENERATION[POS][0];
+        CIndividual* LEADER = WHOLE_GENS(POS,0);
+
 
         for(int i = 0; i < this->POP_SIZE; i++){
 
-                if( this->WHOLE_GENERATION[POS][i] > LEADER )
-                        LEADER = this->WHOLE_GENERATION[POS][i];
+                if( *WHOLE_GENS(POS,i) > *LEADER ){
+
+                        LEADER = WHOLE_GENS(POS,i);
+                }
         }
 
-        this->WHOLE_GENERATION[POS][this->POP_SIZE] = LEADER;
+        return LEADER;
 }
 
 CIndividual* CGeneticAlgorithm::parent(int POS) {
 
         int CANDIDATE_A = rand()%(this->POP_SIZE);
         int CANDIDATE_B = rand()%(this->POP_SIZE);
-        //cout<<CANDIDATE_A<<" "<<CANDIDATE_B<<endl;
 
-
-        //DEBUG
-        /*
-        if(WHOLE_GENERATION[POS][CANDIDATE_A] == NULL || WHOLE_GENERATION[POS][CANDIDATE_B] == NULL){
-                cout<<"Err : pos: "<<POS<<" "<<CANDIDATE_A<<" "<<CANDIDATE_B<<endl;
-        } */
-
-        if(this->WHOLE_GENERATION[POS][CANDIDATE_A] > this->WHOLE_GENERATION[POS][CANDIDATE_B]){
-                return this->WHOLE_GENERATION[POS][CANDIDATE_A];
+        if( WHOLE_GENS(POS,CANDIDATE_A) > WHOLE_GENS(POS,CANDIDATE_B)){
+                return WHOLE_GENS(POS,CANDIDATE_A);
         }
 
-        return this->WHOLE_GENERATION[POS][CANDIDATE_B];
+        return WHOLE_GENS(POS,CANDIDATE_B);
 
 }
 
 
+
 CIndividual* CGeneticAlgorithm::wh_gen_leader() {
 
-        cout<<"------TEST wh_gen_leader"<<endl;
-        this->print_gen(0);
-
-        CIndividual* WH_LEADER = this->WHOLE_GENERATION[0][this->POP_SIZE];
+        CIndividual* WH_LEADER = WHOLE_GENS(0,this->POP_SIZE);
 
         for(int POP_ITER = 0; POP_ITER < this->END_GENERATION; POP_ITER++){
 
-                if(this->WHOLE_GENERATION[POP_ITER][this->POP_SIZE] > WH_LEADER){
-                        WH_LEADER = this->WHOLE_GENERATION[POP_ITER][this->POP_SIZE];
+                if(*WHOLE__GENS(POP_ITER).back() > *WH_LEADER){
+                        WH_LEADER = WHOLE__GENS(POP_ITER).back();
                 }
         }
-
-        cout<<endl<<"---wh"<<endl;
-        this->print_gen(0);
-        cout<<endl<<"-----"<<endl;
 
         return WH_LEADER;
 }
@@ -133,35 +100,47 @@ void CGeneticAlgorithm::run_ga() {
 
         this->cr_fst_gen();
 
-        while(this->CURRENT_GEN < this->END_GENERATION){
+        for(int i = 1; i < this->END_GENERATION; i++){
 
-                cout<<"run_ga"<<this->CURRENT_GEN
-                this->next_gen();
-
+                this->next_gen(i-1);
         }
 
-        this->CURRENT_GEN--;
-        this->wh_gen_leader();
         this->DONE = true;
+        cout<<"Leader: ";
+        this->wh_gen_leader()->print_gen();
+        cout<<endl;
+
+        this->print_wh_gen();
 }
 
 CGeneticAlgorithm::CGeneticAlgorithm(int POP_SIZE, int END_GENERATION, double CROSS_PROBA, double MUTATION_PROBA,
                                      Knapsack *KNAPSACK) {
 
-
-        WHOLE_GENERATION= new CIndividual** [KNAPSACK->size()+2];
         this->POP_SIZE = POP_SIZE;
         this->KNAPSACK = KNAPSACK;
         this->CROSS_PROBA = CROSS_PROBA;
         this->MUTATION_PROBA = MUTATION_PROBA;
         this->END_GENERATION = END_GENERATION;
-        this->CURRENT_GEN = 0;
         this->DONE = false;
+
+        if(this->POP_SIZE%2 == 1)
+                this->POP_SIZE++;
+
+        for(int i = 0; i < this->END_GENERATION; i++)
+                WHOLE_GENS.push_back( VCIND() );
 
 }
 
 CGeneticAlgorithm::~CGeneticAlgorithm() {
 
+        for(int i = 0; i < this->WHOLE_GENS.size(); i++){
+                for(int j = 0; j < WHOLE__GENS(i).size(); j++){
+                        delete WHOLE_GENS(i,j);
+                }
+                WHOLE__GENS(i).clear();
+        }
+        WHOLE_GENS.clear();
+        delete KNAPSACK;
 }
 
 void CGeneticAlgorithm::print_wh_gen() {
@@ -171,35 +150,33 @@ void CGeneticAlgorithm::print_wh_gen() {
                 return;
         }
 
-        this->WHOLE_GENERATION[0][0]->print_gen();
-        cout<<", ";
-        this->WHOLE_GENERATION[0][1]->print_gen();
-        cout<<", ";
-        this->WHOLE_GENERATION[0][2]->print_gen();
-        cout<<", ";
-        this->WHOLE_GENERATION[0][3]->print_gen();
-        cout<<endl;
-
 
         for(int i = 0; i < this->END_GENERATION; i++){
 
                 cout<<"GEN "<<i<<" : ";
                 this->print_gen(i);
-                cout<<endl;
         }
 
-        //cout<<endl<<endl<<"Leader of whole generations: ";
-        //this->wh_gen_leader()->print_gen();
-        //cout<<endl;
+
 }
 
 void CGeneticAlgorithm::print_gen(int POS) {
 
 
         for (int i = 0; i < this->POP_SIZE; i++) {
-                this->WHOLE_GENERATION[POS][i]->print_gen();
+                WHOLE_GENS(POS,i)->print_gen();
                 cout << " ";
         }
         cout << endl;
+}
+
+void CGeneticAlgorithm::print_leaders() {
+
+        cout<<endl<<endl<<"print leaders"<<endl;
+
+        for(int i = 0; i < this->WHOLE_GENS.size(); i++){
+                WHOLE_GENS(i,this->POP_SIZE)->print_gen();
+        }
+
 }
 

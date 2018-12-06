@@ -17,8 +17,8 @@ class Knapsack {
 private:
     int N_ITEMS;
     double MAX_LOAD;
-    double* WEIGHT_OF_ITEMS;
-    double* VALUE_OF_ITEMS;
+    vector<double> WEIGHT_OF_ITEMS;
+    vector<double> VALUE_OF_ITEMS;
 
 public:
     int n_items();
@@ -27,10 +27,7 @@ public:
     double value_of_item(int POS);
     int size();
 
-    void fill_weights(vector<double> TAB);
-    void fill_values(vector<double> TAB);
-
-    Knapsack(int N_ITEMS, double MAX_LOAD);
+    Knapsack(int N_ITEMS, double MAX_LOAD, vector<double> WEIGHTS, vector<double> VALUES);
     ~Knapsack();
 
 

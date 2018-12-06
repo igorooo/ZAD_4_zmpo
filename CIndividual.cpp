@@ -142,7 +142,8 @@ void CIndividual::print_gen() {
     for(int i = 0; i < this->SIZE; i++){
         cout<<this->GENOTYPE[i];
     }
-    cout<<" fitness: "<<this->FITNESS<<endl;
+    cout<<" ";
+    //cout<<" fitness: "<<this->FITNESS<<endl;
 
 }
 

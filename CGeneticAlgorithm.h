@@ -21,15 +21,18 @@ private:
     double MUTATION_PROBA; //PROBABILITY
     CIndividual*** WHOLE_GENERATION;
     Knapsack* KNAPSACK;
+    bool DONE;
 
 public:
     void cr_fst_gen();  //create first generation
-    void next_gen();
-    void find_cur_leader(int POS);
-    CIndividual* wh_gen_leader(); //whole generation leader
-    CIndividual* parent(int POS);
+    void next_gen();  //create next gen
+    void find_cur_leader(int POS); //current generation leader
+    CIndividual* wh_gen_leader(); //whole generations leader
+    CIndividual* parent(int POS);  // random parent
 
     void run_ga();
+    void print_wh_gen();
+    void print_gen(int POS);
 
     CGeneticAlgorithm(int POP_SIZE,int END_GENERATION, double CROSS_PROBA, double MUTATION_PROBA, Knapsack* KNAPSACK );
     ~CGeneticAlgorithm();

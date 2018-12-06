@@ -54,7 +54,7 @@ CIndividual* CIndividual::cross(CIndividual* PARENT_B, int CROSS_PARTITION) {
 
     if(brandom(this->CROSS_PROB)){
 
-        bool* N_GENOTYPE = new bool[this->SIZE];
+        bool N_GENOTYPE[this->SIZE];
 
         for(int i = 0; i < CROSS_PARTITION; i++){
             N_GENOTYPE[i] = this->GENOTYPE[i];
@@ -76,6 +76,7 @@ CIndividual* CIndividual::cross(CIndividual* PARENT_B, int CROSS_PARTITION) {
          */
 
         return (new CIndividual(this->CROSS_PROB, this->MUT_PROB,this-> KNAPSACK, N_GENOTYPE));
+
     }
 
     else{
@@ -87,13 +88,7 @@ CIndividual* CIndividual::cross(CIndividual* PARENT_B, int CROSS_PARTITION) {
 
 CIndividual::CIndividual(CIndividual &CLONE) {
 
-    bool *GENOTYPE = new bool[CLONE.SIZE];
 
-    for(int i = 0; i < CLONE.SIZE; i++){
-        GENOTYPE[i] = CLONE.GENOTYPE[i];
-    }
-
-    this->GENOTYPE = GENOTYPE;
 
     this->SIZE = CLONE.SIZE;
     this->MAX_LOAD = CLONE.MAX_LOAD;
@@ -101,6 +96,12 @@ CIndividual::CIndividual(CIndividual &CLONE) {
     this->MUT_PROB = CLONE.MUT_PROB;
     this->KNAPSACK = CLONE.KNAPSACK;
     this->FITNESS = CLONE.FITNESS;
+
+    this->GENOTYPE = new bool[CLONE.SIZE];
+
+    for(int i = 0; i < CLONE.SIZE; i++){
+        this->GENOTYPE[i] = CLONE.GENOTYPE[i];
+    }
 }
 
 CIndividual::CIndividual( double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK) {
@@ -111,12 +112,13 @@ CIndividual::CIndividual( double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK)
     this->MUT_PROB = MUT_PROB;
     this->KNAPSACK = KNAPSACK;
 
+    this->GENOTYPE = new bool[this->SIZE +1];
     this->create_genotype();
 
     this->c_fitness();
 }
 
-CIndividual::CIndividual( double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK, bool *GENOTYPE) {
+CIndividual::CIndividual( double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK, bool GENOTYPE[]) {
 
     this->SIZE = KNAPSACK->size();
     this->MAX_LOAD = KNAPSACK->max_load();
@@ -124,7 +126,12 @@ CIndividual::CIndividual( double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK,
     this->MUT_PROB = MUT_PROB;
     this->KNAPSACK = KNAPSACK;
 
-    this->GENOTYPE = GENOTYPE;
+    this->GENOTYPE = new bool[this->SIZE+1];
+
+
+    for(int i = 0; i < this->SIZE; i++){
+        this->GENOTYPE[i] = GENOTYPE[i];
+    }
 
     this->c_fitness();
 }
@@ -140,7 +147,6 @@ bool CIndividual::operator>(CIndividual &OBJECT) {
 
 void CIndividual::create_genotype() {
 
-    this->GENOTYPE = new bool[this->SIZE +1];
 
     for(int i = 0; i < this->SIZE; i++){
 

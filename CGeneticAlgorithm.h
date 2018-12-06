@@ -36,6 +36,7 @@ public:
     CIndividual* find_cur_leader(int POS); //current generation leader
     CIndividual* wh_gen_leader(); //whole generations leader
     CIndividual* parent(int POS);  // random parent
+    void fit_of_gen(int X, int Y);
 
 
     void run_ga();

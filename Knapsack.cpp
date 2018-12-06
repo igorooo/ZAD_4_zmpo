@@ -32,6 +32,8 @@ Knapsack::Knapsack(int N_ITEMS, double MAX_LOAD, vector<double> WEIGHTS, vector<
 }
 
 Knapsack::~Knapsack() {
+    WEIGHT_OF_ITEMS.clear();
+    VALUE_OF_ITEMS.clear();
 
 }
 

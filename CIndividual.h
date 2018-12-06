@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <cmath>
 #include <iostream>
+#include <vector>
 #include "Knapsack.h"
 
 #define EPSILON 0.001
@@ -19,23 +20,24 @@ class CIndividual {
 
 private:
     bool *GENOTYPE;
+
+
     int SIZE;
     double MAX_LOAD;
     double FITNESS;
     double CROSS_PROB,MUT_PROB;
     Knapsack* KNAPSACK;
 
-
+    void create_genotype();
+    bool brandom(double PROBA);
+    void c_fitness();  // count fitness
 
 public:
-    void c_fitness();
+
     double fitness();
     void mutation();   //  0 <= PROBABILITY <=1
     CIndividual* cross(CIndividual* PARENT_B,int CROSS_PARTITION);  // this = PARENT_A
-    bool brandom(double PROBA);
-    void create_genotype();
     void print_gen();
-
     CIndividual(CIndividual &CLONE);
     CIndividual( double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK);
     CIndividual( double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK, bool* GENOTYPE);

@@ -5,14 +5,26 @@
 #include "CIndividual.h"
 #include "Knapsack.h"
 #include "CGeneticAlgorithm.h"
+#include "ReadFile.h"
+#include "CKnapsackProblem.h"
+#include <fstream>
+
+// testing:   ../test2 30 100 0.8 0.1
 
 int main() {
 
-    int SIZE = 5;
+    CKnapsackProblem KNP;
 
-    srand(time(0));
+    KNP.configure();
+    KNP.start();
+
+    //KNP.fit_of_gen(99,0);
 
 
+    return 0;
+}
+
+    /*
 
     double vTab[] = {1.0, 2.1, 3, 4, 5};   //WART
     double wTab[] = {1.5, 2.6, 2, 4, 4.5};  //WAGI
@@ -53,4 +65,4 @@ int main() {
 
 
     return 0;
-}
+} */

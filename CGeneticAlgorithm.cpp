@@ -32,8 +32,8 @@ void CGeneticAlgorithm::next_gen(int LAST_GEN) {
            // this->WHOLE_GENERATION[this->CURRENT_GEN+1][POP_ITER++] = PARENT_A->cross(PARENT_B,CROSS_PART);
 
 
-           WHOLE__GENS(LAST_GEN+1).push_back(new CIndividual(*PARENT_A->cross(PARENT_B,CROSS_PART)));
-           WHOLE__GENS(LAST_GEN+1).push_back(new CIndividual(*PARENT_B->cross(PARENT_A,CROSS_PART)));
+           WHOLE__GENS(LAST_GEN+1).push_back(PARENT_A->cross(PARENT_B,CROSS_PART));
+           WHOLE__GENS(LAST_GEN+1).push_back(PARENT_B->cross(PARENT_A,CROSS_PART));
 
 
         }
@@ -59,7 +59,7 @@ CIndividual* CGeneticAlgorithm::find_cur_leader(int POS) {
                 }
         }
 
-        return LEADER;
+        return new CIndividual(*LEADER);
 }
 
 CIndividual* CGeneticAlgorithm::parent(int POS) {
@@ -106,11 +106,14 @@ void CGeneticAlgorithm::run_ga() {
         }
 
         this->DONE = true;
+
+        this->print_wh_gen();
+
         cout<<"Leader: ";
         this->wh_gen_leader()->print_gen();
         cout<<endl;
 
-        this->print_wh_gen();
+
 }
 
 CGeneticAlgorithm::CGeneticAlgorithm(int POP_SIZE, int END_GENERATION, double CROSS_PROBA, double MUTATION_PROBA,
@@ -140,7 +143,7 @@ CGeneticAlgorithm::~CGeneticAlgorithm() {
                 WHOLE__GENS(i).clear();
         }
         WHOLE_GENS.clear();
-        delete KNAPSACK;
+        //delete KNAPSACK;
 }
 
 void CGeneticAlgorithm::print_wh_gen() {
@@ -176,6 +179,18 @@ void CGeneticAlgorithm::print_leaders() {
 
         for(int i = 0; i < this->WHOLE_GENS.size(); i++){
                 WHOLE_GENS(i,this->POP_SIZE)->print_gen();
+        }
+
+}
+
+void CGeneticAlgorithm::fit_of_gen(int X, int Y) {
+
+        if( ( X >= 0 && X < this->WHOLE_GENS.size() ) && ( Y >= 0 && Y < this->POP_SIZE)){
+                cout<<"Fitnes of genotype number  "<<Y<<"  from  "<<Y<<" generation  = " <<WHOLE_GENS(X,Y)->fitness()<<endl;
+        }
+
+        else{
+                cout<<"WRONG (X,Y)"<<endl;
         }
 
 }

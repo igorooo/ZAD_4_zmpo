@@ -21,7 +21,6 @@ class CIndividual {
 private:
     bool *GENOTYPE;
 
-
     int SIZE;
     double MAX_LOAD;
     double FITNESS;
@@ -36,14 +35,20 @@ public:
 
     double fitness();
     void mutation();   //  0 <= PROBABILITY <=1
-    CIndividual* cross(CIndividual* PARENT_B,int CROSS_PARTITION);  // this = PARENT_A
+    CIndividual* cross(CIndividual* PARENT_B, int C_PART1, int C_PART2);  // this = PARENT_A
     void print_gen();
+
     CIndividual(CIndividual &CLONE);
     CIndividual( double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK);
     CIndividual( double CROSS_PROB, double MUT_PROB,Knapsack* KNAPSACK, bool* GENOTYPE);
     ~CIndividual();
 
     bool operator>(CIndividual &OBJECT);
+
+    // ++  mutacja
+    // =
+    // +  krzyżowanie
+
 
 
 };

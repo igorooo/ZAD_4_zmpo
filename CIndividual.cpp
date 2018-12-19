@@ -50,18 +50,25 @@ void CIndividual::mutation() {
     this->c_fitness();
 }
 
-CIndividual* CIndividual::cross(CIndividual* PARENT_B, int CROSS_PARTITION) {
+CIndividual* CIndividual::cross(CIndividual* PARENT_B, int C_PART1, int C_PART2) {
+
+    int PART1 = min(C_PART1,C_PART2);
+    int PART2 = max(C_PART1,C_PART2);
 
     if(brandom(this->CROSS_PROB)){
 
         bool N_GENOTYPE[this->SIZE];
 
-        for(int i = 0; i < CROSS_PARTITION; i++){
+        for(int i = 0; i < PART1; i++){
             N_GENOTYPE[i] = this->GENOTYPE[i];
         }
 
-        for(int i = CROSS_PARTITION; i < this->SIZE; i++){
+        for(int i = PART1; i < PART2; i++){
             N_GENOTYPE[i] = PARENT_B->GENOTYPE[i];
+        }
+
+        for(int i = PART2; i < this->SIZE; i++){
+            N_GENOTYPE[i] = this->GENOTYPE[i];
         }
 
 
@@ -72,8 +79,8 @@ CIndividual* CIndividual::cross(CIndividual* PARENT_B, int CROSS_PARTITION) {
         cout<<"  =  ";
         for(int i = 0; i < this->SIZE; i++)
             cout<<N_GENOTYPE[i];
-        cout<<"     PARTITION = "<<CROSS_PARTITION<<endl;
-         */
+        cout<<"     PART 1 = "<<PART1<<"PART 2 = "<<PART2<<endl; */
+
 
         return (new CIndividual(this->CROSS_PROB, this->MUT_PROB,this-> KNAPSACK, N_GENOTYPE));
 
@@ -164,6 +171,8 @@ void CIndividual::print_gen() {
     //cout<<" fitness: "<<this->FITNESS<<endl;
 
 }
+
+
 
 
 

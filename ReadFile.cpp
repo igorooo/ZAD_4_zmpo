@@ -8,7 +8,7 @@ Knapsack* ReadFile::readfile() {
 
     string FILE_NAME,FILE;
 
-    cout<<"Enter file name (also PATH if not in the same directory for e.g ../SAVES/main.txt ) : ";
+    cout<<"Enter file name (also PATH if not in the same directory for e.g ../test2 ) : ";
     cin>>FILE_NAME;
 
     ifstream READER;

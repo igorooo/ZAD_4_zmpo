@@ -18,7 +18,7 @@ void CGeneticAlgorithm::next_gen(int LAST_GEN) {
 
         CIndividual* PARENT_A;
         CIndividual* PARENT_B;
-        int CROSS_PART;
+        int C_PART1, C_PART2;
 
 
         for(int POP_ITER = 0; POP_ITER < this->POP_SIZE /2; POP_ITER++){
@@ -27,13 +27,14 @@ void CGeneticAlgorithm::next_gen(int LAST_GEN) {
             PARENT_A = this->parent(LAST_GEN);
             PARENT_B = this->parent(LAST_GEN);
 
-            CROSS_PART = (rand()%(this->KNAPSACK->size()-2))+1;
+            C_PART1 = (rand()%(this->KNAPSACK->size()-2))+1;
+            C_PART2 = (rand()%(this->KNAPSACK->size()-2))+1;
 
            // this->WHOLE_GENERATION[this->CURRENT_GEN+1][POP_ITER++] = PARENT_A->cross(PARENT_B,CROSS_PART);
 
 
-           WHOLE__GENS(LAST_GEN+1).push_back(PARENT_A->cross(PARENT_B,CROSS_PART));
-           WHOLE__GENS(LAST_GEN+1).push_back(PARENT_B->cross(PARENT_A,CROSS_PART));
+           WHOLE__GENS(LAST_GEN+1).push_back(PARENT_A->cross(PARENT_B,C_PART1,C_PART2));
+           WHOLE__GENS(LAST_GEN+1).push_back(PARENT_B->cross(PARENT_A,C_PART1,C_PART2));
 
 
         }
